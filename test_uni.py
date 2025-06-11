@@ -1,6 +1,6 @@
 import pytest
 from flask import template_rendered
-from index import app  # Supondo que o arquivo principal seja app.py
+from index import app
 from contextlib import contextmanager
 
 
@@ -32,3 +32,12 @@ def test_index_route_renders_template(client):
         assert len(templates) == 1
         template, context = templates[0]
         assert template.name == "index.html"
+
+
+def test_404_for_nonexistent_route(client):
+    response = client.get('/rota-que-nao-existe')
+    assert response.status_code == 404
+
+
+def test_app_testing_config_is_true(client):
+    assert app.config["TESTING"] is True
